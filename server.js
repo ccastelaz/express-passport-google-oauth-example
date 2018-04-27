@@ -35,8 +35,11 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
+//app.get('/auth/google', passport.authenticate('google', {
+//    scope: ['https://www.googleapis.com/auth/userinfo.profile']
+//}));
 app.get('/auth/google', passport.authenticate('google', {
-    scope: ['https://www.googleapis.com/auth/userinfo.profile']
+   scope: ['email', 'profile'] // Have to ask for email if you want it
 }));
 
 app.get('/auth/google/callback',
@@ -44,6 +47,7 @@ app.get('/auth/google/callback',
         failureRedirect: '/'
     }),
     (req, res) => {
+        console.log(req.user);
         console.log(req.user.token);
         req.session.token = req.user.token;
         res.redirect('/');
